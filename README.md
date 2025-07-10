@@ -1,28 +1,29 @@
-# Hi 👋, I'm Aryaman
+# Yo! 👋 I'm Aryaman — your friendly neighborhood AI wizard 🧙‍♂️
 
-### 🔭 I’m currently working on AI tools for healthcare & fitness
+### 🚀 Building badass AI tools that make doctors' lives easier & gym goers unstoppable 💪
 
-[![Aryaman's GitHub stats](https://github-readme-stats.vercel.app/api?username=Aryaman-Arya&show_icons=true&theme=dracula)](https://github.com/Aryaman-Arya)
+[![Aryaman's GitHub stats](https://github-readme-stats.vercel.app/api?username=Aryaman-Arya&show_icons=true&theme=dracula&hide_title=true)](https://github.com/Aryaman-Arya)
 
-[![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Aryaman-Arya&layout=compact&theme=dracula)](https://github.com/Aryaman-Arya)
+[![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Aryaman-Arya&layout=compact&theme=dracula&hide_title=true)](https://github.com/Aryaman-Arya)
 
-[![Aryaman's GitHub Streak](https://github-readme-streak-stats.herokuapp.com/?user=Aryaman-Arya&theme=dracula)](https://github.com/Aryaman-Arya)
-
----
-
-### 🛠️ Skills
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat&logo=tensorflow&logoColor=white)
-![Vibe Coding](https://img.shields.io/badge/Vibe%20Coding-8A2BE2?style=flat&logo=code&logoColor=white)
-![Efficient Googling](https://img.shields.io/badge/Efficient%20Googling-4285F4?style=flat&logo=google&logoColor=white)
+[![Streak Stats](https://github-readme-streak-stats.herokuapp.com/?user=Aryaman-Arya&theme=dracula&hide_border=true)](https://github.com/Aryaman-Arya)
 
 ---
 
-### 📫 Find me on
+### 💥 Skills that pay the bills:
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/aryaman-9282141b8/)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white) 
+![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat&logo=tensorflow&logoColor=white) 
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white) 
+![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white)
 
 ---
 
-![coding gif](https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif)
+### 📫 Hit me up if you wanna collab, chat AI, or just vibe:
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/aryaman-9282141b8/)  
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white)](https://twitter.com/your_handle_here)
+
+---
+
+![Coding mode: activated ⚡](https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif)
