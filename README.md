@@ -1,4 +1,4 @@
-# Yo! 👋 I'm Aryaman — your friendly neighborhood AI wizard 🧙‍♂️
+# Sup! 👋 I'm Aryaman
 
 ### 🚀 Building AI tools that make doctors' lives easier & gym goers unstoppable 💪
 
