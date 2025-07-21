@@ -1,6 +1,6 @@
 # Sup! 👋 I'm Aryaman
 
-### 🚀 Building AI tools that make doctors' lives easier & gym goers unstoppable 💪
+### 🚀 Building AI tools that make doctors' lives easier & workouts irrespective 💪
 
 [![Aryaman's GitHub stats](https://github-readme-stats.vercel.app/api?username=Aryaman-Arya&show_icons=true&theme=dracula&hide_title=true)](https://github.com/Aryaman-Arya)
 
