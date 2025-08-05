@@ -21,7 +21,7 @@
 
 ### 📫 Hit me up if you wanna collab, chat AI, or just vibe:
 
-[![LinkedIn]([https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](www.linkedin.com/in/aryaman-arya)(https://www.linkedin.com/in/aryaman-singh-9282141b8/))  
+[![LinkedIn]([https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](www.linkedin.com/in/aryaman-arya)
 
 ---
 
