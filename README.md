@@ -1,4 +1,4 @@
-# Sup! 👋 I'm Aryaman
+# Sup! I'm Aryaman
 
 ### Gamifying AI
 
