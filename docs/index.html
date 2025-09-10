@@ -1,1 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aryaman — Gamifying AI</title>
+  <style>
+    /* ---------- Base & Layout ---------- */
+    :root{
+      --bg-1:#0b0f10;
+      --bg-2:#07120f;
+      --neon:#10b981;
+      --muted:#9ca3af;
+      --panel:#0f1720;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;}
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(5,40,30,0.55), transparent 10%),
+                  linear-gradient(180deg, var(--bg-1), #020203 60%);
+      color:#e6eef3;
+      display:flex;align-items:center;justify-content:center;padding:32px;
+    }
+    .card{
+      width:100%;max-width:1100px;border-radius:16px;overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 40px rgba(2,6,8,0.75), inset 0 1px 0 rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .grid{
+      display:grid;grid-template-columns: 1fr 360px;gap:24px;
+    }
+    header{
+      display:flex;gap:20px;padding:28px;border-bottom:1px solid rgba(255,255,255,0.03);align-items:center;
+    }
+    .avatar{width:112px;height:112px;border-radius:12px;border:3px solid #b58b00;overflow:hidden;transform:rotate(-4deg);box-shadow:0 8px 24px rgba(0,0,0,0.6)}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    h1{margin:0;font-size:26px;letter-spacing:-0.4px}
+    .sub{color:var(--muted);margin-top:6px}
+    .cta{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 12px;border-radius:8px;color:#e8f3ea;
+      font-weight:600;text-decoration:none;display:inline-block;transition:transform .18s ease,box-shadow .18s ease;
+    }
+    .btn:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(16,185,129,0.06)}
+    .neon{color:var(--neon);text-shadow:0 6px 28px rgba(16,185,129,0.06)}
+    main{
+      padding:22px;border-top:1px solid rgba(255,255,255,0.02);
+    }
+
+    /* ---------- LEFT: content column ---------- */
+    .content{padding:22px}
+    .stats-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .stats-row img{border-radius:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+    .section{margin-top:18px}
+    .badges img{height:26px;margin-right:8px;vertical-align:middle}
+
+    /* ---------- RIGHT: side column ---------- */
+    aside{padding:22px;background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(0,0,0,0.02));border-left:1px solid rgba(255,255,255,0.02)}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:14px;border-radius:10px}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* ---------- SNAKE BOARD ---------- */
+    .snake-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+    .board{
+      width: calc(15 * 18px + 14 * 1px + 2px); /* cell 18px + gaps */
+      background:rgba(0,0,0,0.55);
+      padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);
+      display:grid;grid-template-columns:repeat(15,18px);grid-auto-rows:18px;gap:1px;
+      box-shadow: 0 8px 30px rgba(2,6,8,0.6), inset 0 1px 0 rgba(255,255,255,0.01);
+    }
+    .cell{width:18px;height:18px;background:#07090a;border-radius:3px;transition:background .06s linear, transform .06s linear}
+    .cell.snake{background:linear-gradient(180deg,var(--neon), #06794f);box-shadow:0 6px 18px rgba(16,185,129,0.06)}
+    .cell.food{background:#ff3b30;box-shadow:0 6px 18px rgba(255,59,48,0.06)}
+    .board:before{
+      content:'';position:absolute;pointer-events:none;mix-blend-mode:overlay;
+    }
+
+    /* ---------- film grain + scanline effect ---------- */
+    .filmgrain{
+      position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0.06;background-image:
+      radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size:6px 6px;animation:grain 6s linear infinite;
+    }
+    @keyframes grain{0%{opacity:0.04}50%{opacity:0.09}100%{opacity:0.04}}
+
+    /* ---------- subtle matrix rain behind board ---------- */
+    .matrix{
+      position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0.08;
+      background-image:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.6));
+      mask-image:linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,0));
+    }
+
+    /* ---------- footer ---------- */
+    footer{padding:14px;border-top:1px solid rgba(255,255,255,0.03);display:flex;justify-content:space-between;color:var(--muted);font-size:13px}
+
+    /* ---------- responsive ---------- */
+    @media (max-width:980px){ .grid{grid-template-columns:1fr} aside{order:2} header{flex-direction:row} .avatar{width:96px;height:96px} }
+    @media (prefers-reduced-motion:reduce){ *{animation:none;transition:none} }
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <div style="position:relative">
+      <div class="filmgrain" aria-hidden="true"></div>
+      <div class="grid">
+        <div>
+          <header>
+            <div class="avatar"><img src="https://avatars.githubusercontent.com/u/1?v=4" alt="avatar"></div>
+            <div>
+              <h1>Sup! I'm <span class="neon">Aryaman</span></h1>
+              <div class="sub">Gamifying AI — playful, product-minded, & ruthless about UX</div>
+              <div class="cta">
+                <a class="btn" href="https://github.com/Aryaman-Arya" target="_blank">GitHub</a>
+                <a class="btn" href="https://www.linkedin.com/in/aryaman-arya" target="_blank">LinkedIn</a>
+              </div>
+            </div>
+          </header>
+
+          <main class="content">
+            <div class="stats-row">
+              <img src="https://github-readme-stats.vercel.app/api?username=Aryaman-Arya&show_icons=true&theme=dracula&hide_title=true" alt="github stats" style="width:42%;min-width:220px"/>
+              <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Aryaman-Arya&layout=compact&theme=dracula&hide_title=true" alt="languages" style="width:28%;min-width:160px"/>
+              <img src="https://github-readme-stats.vercel.app/api?username=Aryaman-Arya&count_private=true&show_icons=true&theme=dracula&hide_title=true&custom_title=activity" alt="activity" style="width:28%;min-width:160px"/>
+            </div>
+
+            <div class="section">
+              <h3 style="margin:0 0 8px 0">Skills that pay the bills</h3>
+              <div class="badges">
+                <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white" alt="Python">
+                <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=flat&logo=tensorflow&logoColor=white" alt="TensorFlow">
+                <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white" alt="Docker">
+                <img src="https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white" alt="Git">
+              </div>
+            </div>
+
+            <div class="section">
+              <h3 style="margin:0 0 8px 0">About</h3>
+              <p class="muted" style="margin:0">AI-driven health products (DoQ, TalQ). YC & Antler applicant experience. Building practical products for low-resource healthcare settings.</p>
+            </div>
+          </main>
+        </div>
+
+        <aside>
+          <div class="panel" style="position:relative;overflow:hidden">
+            <div style="position:relative;z-index:2">
+              <h4 style="margin:0 0 8px 0">Profile highlights</h4>
+              <ul style="margin:0 0 12px 16px;color:var(--muted);font-size:14px">
+                <li>AI-driven health tools (DoQ, TalQ)</li>
+                <li>Cross-lingual medical tooling</li>
+                <li>Startup & accelerator experience</li>
+              </ul>
+
+              <div style="margin-top:8px" class="muted">Workout: Ironman prep</div>
+              <div style="margin-top:6px" class="muted">Languages: English, Chinese (learning), Polish (learning)</div>
+            </div>
+
+            <!-- matrix rain behind the panel -->
+            <canvas id="matrixCanvas" width="360" height="180" style="position:absolute;left:0;top:0;pointer-events:none;z-index:1;opacity:0.08"></canvas>
+          </div>
+
+          <div style="height:18px"></div>
+
+          <div class="panel snake-wrap" aria-label="Snake Game">
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
+              <div>
+                <strong>Snake Mode:</strong>
+                <div class="muted" style="margin-top:4px">Use arrow keys to play. Eat red dot to grow.</div>
+              </div>
+              <div style="text-align:right">
+                <div id="score" style="font-weight:700;color:var(--neon)">Score: 0</div>
+                <div class="muted" style="font-size:12px">Tip: press any arrow key to start</div>
+              </div>
+            </div>
+
+            <div class="board" id="board" role="application" aria-label="Snake board" style="margin-top:12px"></div>
+
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button id="restart" class="btn" style="padding:6px 8px;font-size:13px">Restart</button>
+              <button id="speedDown" class="btn" style="padding:6px 8px;font-size:13px">Slower</button>
+              <button id="speedUp" class="btn" style="padding:6px 8px;font-size:13px">Faster</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <footer>
+        <div>Built with focus, caffeine, and stubbornness.</div>
+        <div style="font-family:monospace;color:var(--muted)">Portfolio · Resume · Projects</div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    /* ---------- Snake Game Logic (vanilla JS) ---------- */
+    (function(){
+      const ROWS = 15, COLS = 15;
+      const boardEl = document.getElementById('board');
+      const scoreEl = document.getElementById('score');
+      let cells = [];
+      let snake = [[5,5]];
+      let dir = [0,1];
+      let food = [10,10];
+      let running = false;
+      let tick = 220;
+      let timer = null;
+
+      function createBoard(){
+        boardEl.innerHTML = '';
+        cells = [];
+        for(let r=0;r<ROWS;r++){
+          for(let c=0;c<COLS;c++){
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.dataset.r = r; cell.dataset.c = c;
+            boardEl.appendChild(cell);
+            cells.push(cell);
+          }
+        }
+      }
+
+      function idx(r,c){ return r*COLS + c; }
+
+      function render(){
+        // clear
+        cells.forEach(el => { el.classList.remove('snake','food'); });
+        // snake
+        snake.forEach((seg,i) => {
+          const el = cells[idx(seg[0],seg[1])];
+          if(el) el.classList.add('snake');
+        });
+        // food
+        const fEl = cells[idx(food[0],food[1])];
+        if(fEl) fEl.classList.add('food');
+        scoreEl.textContent = 'Score: ' + (snake.length - 1);
+      }
+
+      function placeFood(){
+        let tries = 0;
+        while(tries < 200){
+          const r = Math.floor(Math.random()*ROWS);
+          const c = Math.floor(Math.random()*COLS);
+          if(!snake.some(s => s[0]===r && s[1]===c)){
+            food = [r,c];
+            return;
+          }
+          tries++;
+        }
+      }
+
+      function step(){
+        const head = snake[0];
+        const newHead = [head[0] + dir[0], head[1] + dir[1]];
+        // wrap around elegantly
+        newHead[0] = (newHead[0] + ROWS) % ROWS;
+        newHead[1] = (newHead[1] + COLS) % COLS;
+
+        // collision with self?
+        if(snake.some(s => s[0]===newHead[0] && s[1]===newHead[1])){
+          // game over - restart
+          running = false;
+          clearInterval(timer);
+          return;
+        }
+
+        snake.unshift(newHead);
+        if(newHead[0] === food[0] && newHead[1] === food[1]){
+          // eat -> grow, place new food
+          placeFood();
+        } else {
+          snake.pop();
+        }
+        render();
+      }
+
+      function start(){
+        if(timer) clearInterval(timer);
+        running = true;
+        timer = setInterval(step, tick);
+      }
+      function stop(){
+        if(timer) clearInterval(timer);
+        running = false;
+      }
+
+      function restart(){
+        snake = [[Math.floor(ROWS/2), Math.floor(COLS/2)]];
+        dir = [0,1];
+        placeFood();
+        render();
+        start();
+      }
+
+      function setDirection(d){
+        // prevent reversing directly
+        if(d[0] === -dir[0] && d[1] === -dir[1]) return;
+        dir = d;
+      }
+
+      // keyboard input
+      window.addEventListener('keydown', (e) => {
+        if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) return;
+        const map = {
+          ArrowUp: [-1,0],
+          ArrowDown: [1,0],
+          ArrowLeft: [0,-1],
+          ArrowRight: [0,1]
+        };
+        setDirection(map[e.key]);
+        if(!running) start();
+      });
+
+      // controls
+      document.getElementById('restart').addEventListener('click', ()=> restart());
+      document.getElementById('speedUp').addEventListener('click', ()=>{
+        tick = Math.max(60, Math.floor(tick*0.8));
+        if(running){ clearInterval(timer); timer = setInterval(step,tick); }
+      });
+      document.getElementById('speedDown').addEventListener('click', ()=>{
+        tick = Math.min(800, Math.floor(tick*1.25));
+        if(running){ clearInterval(timer); timer = setInterval(step,tick); }
+      });
+
+      // init
+      createBoard();
+      placeFood();
+      render();
+
+      // small animation to pulse head when growing - simple CSS transform handled via class changes (omitted for brevity)
+    })();
+
+    /* ---------- Matrix rain behind the side panel ---------- */
+    (function(){
+      const canvas = document.getElementById('matrixCanvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width = canvas.clientWidth;
+      const h = canvas.height = canvas.clientHeight;
+      const cols = Math.floor(w/10);
+      const ypos = Array(cols).fill(0);
+
+      function tick(){
+        ctx.fillStyle = 'rgba(0,0,0,0.08)';
+        ctx.fillRect(0,0,w,h);
+        ctx.fillStyle = '#00ff6a';
+        ctx.font = '12px monospace';
+        for(let i=0;i<ypos.length;i++){
+          const text = String.fromCharCode( 0x30A0 + Math.random()*96 );
+          ctx.fillText(text, i*10, ypos[i]*10);
+          if(ypos[i]*10 > h && Math.random() > 0.975) ypos[i]=0;
+          ypos[i]++;
+        }
+      }
+      setInterval(tick, 80);
+    })();
+  </script>
+</body>
+</html>
 
